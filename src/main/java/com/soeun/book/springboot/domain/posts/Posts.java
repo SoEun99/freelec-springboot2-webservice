@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.GeneratedType;
-
 @Getter
 @NoArgsConstructor
 @Entity
