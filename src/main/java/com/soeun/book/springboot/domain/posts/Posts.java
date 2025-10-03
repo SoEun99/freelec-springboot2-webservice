@@ -13,6 +13,7 @@ public class Posts {
     // 자바빈 규약을 생각하며 getter/setter를 무작정 생성하는 경우, 인스턴스 값이 언제 어디서 변하는지 코드상으로 구분할 수가 없음
     // 따라서 Entity 클래스에서는 절대 Setter 메소드를 만들지 않음
     // 대신 명확히 그 목적과 의도를 나타낼 수 있는 메소드를 추가함
+    // 생성자를 통해 최종 값을 채운 후, DB에 삽입함. 값 변경이 필요하다면 해당 이벤트에 맞는 public 메소드를 호출해서 변경
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
