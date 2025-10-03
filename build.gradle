@@ -1,36 +1,51 @@
-// 이 프로젝트의 플러그인 의존성 관리를 위한 설정
-buildscript {
-    //springBootVersion 전역변수 생성
-    ext {
-        springBootVersion = '2.7.18'
-    }
-    //의존성을 어느 원격 저장소에서 받을 것인지
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
-}
-//∴spring-boot-gradle-plugin의 2.7.18을 의존성으로 받겠음
-
-//앞서 선언한 플러그인 의존성들을 적용할 것인지 결정
-    apply plugin: 'java'
-    apply plugin: 'eclipse'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
+//∴spring-boot-gradle-plugin의 3.4.4을 의존성으로 받겠음
+//선언한 플러그인 의존성들을 적용할 것인지 결정
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
     //io.spring.dependency-management : 스프링부트 의존성 관리 플러그인
+}
+    group = 'com.soeun.book'
+    version = '1.0-SNAPSHOT'
 
-    group 'com.soeun.book'
-    version '1.0-SNAPSHOT'
-    sourceCompatibility = 1.8
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(24)
+        }
+    }
 
     repositories {
         mavenCentral()
     }
 //프로젝트 개발에 필요한 의존성 선언 (자동완성 : ctrl+Space)
-//의존성 하나 하나 버전 명시 X, 전역변수로 버전 관리
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-web'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'junit:junit'
+        testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+        //버전 생략 시 BOM이 관리
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'com.h2database:h2'
+
     }
+// <- dependencies 바깥(최상위)에 위치해야 함
+test {
+    useJUnitPlatform()
+}
+
+//spring-boot-starter-data-jpa
+// · 스프링 부트용 Spring Data JPA 추상화 라이브러리
+// · 스프링 부트 버전에 맞춰 자동으로 JPA 관련 라이브러리들의 버전을 관리함
+
+//h2
+// · 인메모리 관계형 데이터베이스
+// · 별도 설치 없이 프로젝트 의존성만으로 관리 가능
+// · 메모리에서 실행되므로 애플리케이션 재시작마다 초기화된다는 점을 이용, 테스트 용으로 많이 사용
