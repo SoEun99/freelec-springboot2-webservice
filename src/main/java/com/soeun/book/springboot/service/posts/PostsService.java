@@ -21,18 +21,14 @@ public class PostsService {
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
         return postsRepository.save(requestDto.toEntity()).getId();
-
     }
 
     @Transactional
     public Long update(Long id, PostsUpdateRequestDto requestDto) {
-
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
         posts.update(requestDto.getTitle(), requestDto.getContent());
-
         return id;
-
     }
 
 
@@ -48,6 +44,13 @@ public class PostsService {
                 .map(Posts -> new PostsListResponseDto(Posts))
                 .collect(Collectors.toList());
 
+    }
+
+    @Transactional
+    public void delete (Long id) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+        postsRepository.delete(posts);
     }
 
 }
@@ -68,3 +71,8 @@ public class PostsService {
 //findAllDesc 메소드의 트랜잭션 어노테이션에 readOnly=true 옵션이 하나 추가됨
 // · 트랜잭션 범위를 유지하되, 조회 기능만 남겨두어서 조회속도를 개선할 수 있음
 // · 등록, 수정, 삭제 기능이 전혀 없는 서비스 메소드라면 사용을 추천!
+
+//postsRepository.delete(posts)
+// · JPARepository에서 이미 delete 메소드를 지원하고 있으므로 활용
+// · 엔티티를 파라미터로 삭제할 수도 있고, deleteById 메소드로 id를 이용해 삭제할 수도 있음
+// · 존재하는 Posts인지 확인하고자 엔티티 조회 후 그대로 삭제
