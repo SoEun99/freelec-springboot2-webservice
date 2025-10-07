@@ -42,3 +42,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+##Google Cloud
+application-oauth.properties
