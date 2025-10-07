@@ -6,7 +6,29 @@
                 <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
             </div>
         </div>
-    </div>
+    <br>
+    <!--목록 출력 영역-->
+    <table class="table table-horizontal table-bordered">
+        <thead class="thead-strong">
+        <tr>
+            <th>게시글 번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>수정일</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        {{#posts}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{title}}</td>
+                <td>{{author}}</td>
+                <td>{{modifiedDate}}</td>
+            </tr>
+        {{/posts}}
+        </tbody>
+    </table>
+</div>
 {{>layout/footer}}
 
 <!--부트스트랩, 제이쿼리 등 프론트엔드 라이브러리를 사용한 방법 2가지-->
@@ -17,4 +39,10 @@
 <!--(2) 직접 라이브러리를 받아서 사용-->
 
 <!--{> }} -->
-<!-- · 현재 머스테치 파일(index.mustache)를 기준으로 다른 파일을 가져 옴
+<!-- · 현재 머스테치 파일(index.mustache)를 기준으로 다른 파일을 가져 옴-->
+
+<!--{#posts}} -->
+<!-- · posts라는 List를 순회-->
+<!-- · Java의 for문과 동일하게 생각하면 편함-->
+<!--{id}}등의 {변수명}}-->
+<!-- · List에서 뽑아낸 객체의 필드를 사용
