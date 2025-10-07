@@ -1,29 +1,44 @@
 package com.soeun.book.springboot.config.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.h2.engine.Role;
+import com.soeun.book.springboot.domain.user.Role;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.web.SecurityFilterChain;
 
 @RequiredArgsConstructor
+@Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfiguration {
+public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests()
-                .dispatcherTypeMatchers("/", "/css/**", "/images/**","/js/**","/h2-console/**").permitAll()
-                .dispatcherTypeMatchers("/api/v1/**").hasRole(Role.USER.name())
-                .anyRequest().authenticated()
-                .and().logout().logoutSuccessUrl("/")
-                .and().oauth2Login().userInfoEndpoint().userService(customOAuth2UserService);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                // (필요 시) H2 콘솔/간단 테스트용으로 끄는 설정
+                .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/api/v1/**").hasRole(Role.USER.name())
+                        .anyRequest().authenticated()
+                )
+
+                .logout(logout -> logout.logoutSuccessUrl("/"))
+
+                .oauth2Login(oauth -> oauth
+                        .userInfoEndpoint(userInfo ->
+                                userInfo.userService(customOAuth2UserService)
+                        )
+                );
+
+        return http.build();
     }
-
 }
-
 //@EnableWebSecurity
 // · Spring Security 설정을 활성화
 
