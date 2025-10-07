@@ -1,10 +1,20 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <title>아이고 신나</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
+{{>layout/header}}
     <h1> 시작 </h1>
-</body>
-</html>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
+            </div>
+        </div>
+    </div>
+{{>layout/footer}}
+
+<!--부트스트랩, 제이쿼리 등 프론트엔드 라이브러리를 사용한 방법 2가지-->
+<!--(1) 외부 CDN을 사용 = 외부 서비스에 의존하게 되므로 실제 서비스에서는 잘 안씀-->
+<!-- (1)-1 레이아웃 방식 추가-->
+<!--        공통영역을 별도의 파일로 분리하여 필요한 곳에 갖다 쓰는 방식-->
+<!--        매번 해당 라이브러리를 파일에 추가하는 것은 귀찮으니까 레이아웃 파일로 만들어 추가-->
+<!--(2) 직접 라이브러리를 받아서 사용-->
+
+<!--{> }} -->
+<!-- · 현재 머스테치 파일(index.mustache)를 기준으로 다른 파일을 가져 옴
