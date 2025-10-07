@@ -21,7 +21,7 @@
         {{#posts}}
             <tr>
                 <td>{{id}}</td>
-                <td>{{title}}</td>
+                <td><a href="/posts/update/{{id}}">{{title}}</a></td>
                 <td>{{author}}</td>
                 <td>{{modifiedDate}}</td>
             </tr>
@@ -45,4 +45,8 @@
 <!-- · posts라는 List를 순회-->
 <!-- · Java의 for문과 동일하게 생각하면 편함-->
 <!--{id}}등의 {변수명}}-->
-<!-- · List에서 뽑아낸 객체의 필드를 사용
+<!-- · List에서 뽑아낸 객체의 필드를 사용-->
+
+<!--<a href="/posts/update/{id}}"></a>-->
+<!-- · 타이틀(title)에 a tag를 추가-->
+<!-- · 타이틀을 클릭하면 해당 게시글의 수정화면으로 이동-->
