@@ -4,9 +4,7 @@ import com.soeun.book.springboot.config.auth.dto.SessionUser;
 import com.soeun.book.springboot.service.posts.PostsService;
 import com.soeun.book.springboot.web.dto.PostsResponseDto;
 import jakarta.servlet.http.HttpSession;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.h2.engine.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
@@ -26,7 +24,7 @@ public class IndexController {
         if (user != null) {
             model.addAttribute("userName", user.getName());
         }
-    return "index";
+        return "index";
     }
 
     @GetMapping("/posts/save")
