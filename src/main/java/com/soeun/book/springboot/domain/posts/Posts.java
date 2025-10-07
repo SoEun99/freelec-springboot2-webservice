@@ -1,5 +1,6 @@
 package com.soeun.book.springboot.domain.posts;
 
+import com.soeun.book.springboot.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Posts {
+public class Posts extends BaseTimeEntity {
 // 특이점. 본 Posts 클래스에는 Setter 메소드가 없음
     // 자바빈 규약을 생각하며 getter/setter를 무작정 생성하는 경우, 인스턴스 값이 언제 어디서 변하는지 코드상으로 구분할 수가 없음
     // 따라서 Entity 클래스에서는 절대 Setter 메소드를 만들지 않음
