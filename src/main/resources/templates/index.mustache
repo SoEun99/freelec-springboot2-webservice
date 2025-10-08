@@ -11,6 +11,7 @@
                 {{/userName}}
                 {{^userName}}
                     <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                    <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
                 {{/userName}}
             </div>
         </div>
@@ -58,3 +59,8 @@
 <!--<a href="/posts/update/{id}}"></a>-->
 <!-- · 타이틀(title)에 a tag를 추가-->
 <!-- · 타이틀을 클릭하면 해당 게시글의 수정화면으로 이동-->
+
+<!--/oauth2/authorization/naver-->
+<!-- · 네이버 로그인 URL은 application-oauth.properties에 등록한 redirect-uri 값에 맞춰 자동으로 등록-->
+<!-- · /oauth2/authorization/ 까지는 고정, 마지막 Path만 각 소셜 로그인 코드를 사용하면 됨-->
+<!-- · 여기서는 naver가 마지막 Path가 됨-->
