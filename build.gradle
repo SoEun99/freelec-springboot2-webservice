@@ -40,6 +40,9 @@ plugins {
         implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
         implementation 'org.springframework.session:spring-session-jdbc'
+
+        implementation 'org.springframework.security:spring-security-test'
+
     }
 // <- dependencies 바깥(최상위)에 위치해야 함
 test {
