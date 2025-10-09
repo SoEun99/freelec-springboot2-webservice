@@ -17,14 +17,14 @@ public class IndexControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-    
+
     @Test
     public void mainpageloading_test(){
         //when
         String body = this.restTemplate.getForObject("/", String.class);
         
         //then
-        assertThat(body).contains("스프링 부트로 시작헌다 아이고 언제 ㄷ하하냐");
+        assertThat(body).contains("첫 제대로 된 서비스");
     }
     
 }
