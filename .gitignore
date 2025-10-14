@@ -45,3 +45,4 @@ bin/
 
 ##Google Cloud
 application-oauth.properties
+application-real-db.properties
