@@ -19,6 +19,13 @@ plugins {
     repositories {
         mavenCentral()
     }
+
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2024.0.2")
+    }
+}
 //프로젝트 개발에 필요한 의존성 선언 (자동완성 : ctrl+Space)
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -46,6 +53,7 @@ plugins {
         implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
 
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.cloud:spring-cloud-starter'
 
     }
 // <- dependencies 바깥(최상위)에 위치해야 함
