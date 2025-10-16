@@ -28,7 +28,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/**").hasRole("USERS")
                         .anyRequest().authenticated())
                 .logout(logout -> logout.logoutSuccessUrl("/"))
-                        .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)));
+                .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)));
 
         return http.build();
     }
