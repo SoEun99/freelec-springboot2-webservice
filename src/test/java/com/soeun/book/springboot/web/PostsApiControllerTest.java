@@ -63,6 +63,7 @@ public class PostsApiControllerTest {
     @WithMockUser(roles = "USERS")
     public void Posts_test() throws Exception {
         //given
+        port = 8080;
         String title = "title";
         String content = "content";
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
@@ -98,6 +99,7 @@ public class PostsApiControllerTest {
     @WithMockUser(roles = "USERS")
     public void Update_test() throws Exception {
         //given
+        port = 8080;
         Posts savedPosts = postsRepository.save(Posts.builder()
                 .title("title")
                 .content("content")
