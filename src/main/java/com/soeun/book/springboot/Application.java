@@ -21,10 +21,15 @@ public class Application {
         //외장 WAS 종류와 버전, 설정 일치 필요 없이 언제 어디서나 같은 환경에서 스프링 부트 배포 가능
     }
     @Bean
-    CommandLineRunner show(ClientRegistrationRepository repo) {
+    CommandLineRunner showEffectiveClientId(ClientRegistrationRepository repo) {
         return args -> {
-            var reg = ((InMemoryClientRegistrationRepository) repo).findByRegistrationId("google");
-            System.out.println(">>> EFFECTIVE GOOGLE CLIENT_ID = " + reg.getClientId());
+            var reg = ((InMemoryClientRegistrationRepository) repo)
+                    .findByRegistrationId("google");
+            if (reg == null) {
+                System.out.println(">>> [WARN] google ClientRegistration not found!");
+            } else {
+                System.out.println(">>> EFFECTIVE GOOGLE CLIENT_ID = " + reg.getClientId());
+            }
         };
     }
 }
