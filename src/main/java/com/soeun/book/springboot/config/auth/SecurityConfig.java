@@ -25,9 +25,11 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile", "/**").permitAll()
-                        .requestMatchers("/api/v1/**").hasRole("USERS").anyRequest().authenticated())
-                .logout(logout -> logout.logoutSuccessUrl("/"))
-                .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)));
+                        //.requestMatchers("/api/v1/**").hasRole("USERS")
+                        .anyRequest().permitAll());
+                        //.anyRequest().authenticated())
+                //.logout(logout -> logout.logoutSuccessUrl("/"))
+                //.oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)));
 
         return http.build();
     }
