@@ -19,12 +19,11 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        // (선택) 정적 자원/actuator 무시. 여기의 문자열은 DispatcherServlet 매칭이 아니라서 보통 문제를 일으키지 않지만,
-        // 혹시 의심되면 이 라인도 잠깐 주석 처리해보고 원인 분리 테스트를 해보세요.
-        return web -> web.ignoring().requestMatchers("/actuator/**");
-    }
+    //@Bean
+    //public WebSecurityCustomizer webSecurityCustomizer() {
+        // (선택) 정적 자원/actuator 무시. 여기의 문자열은 DispatcherServlet 매칭이 아니라서 보통 문제를 일으키지 않음
+        //return web -> web.ignoring().requestMatchers("/actuator/**");
+    //}
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
