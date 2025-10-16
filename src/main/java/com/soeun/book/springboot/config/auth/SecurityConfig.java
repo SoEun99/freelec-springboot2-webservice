@@ -9,7 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
@@ -19,21 +21,44 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
+        // (선택) 정적 자원/actuator 무시. 여기의 문자열은 DispatcherServlet 매칭이 아니라서 보통 문제를 일으키지 않지만,
+        // 혹시 의심되면 이 라인도 잠깐 주석 처리해보고 원인 분리 테스트를 해보세요.
         return web -> web.ignoring().requestMatchers("/actuator/**");
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   HandlerMappingIntrospector introspector) throws Exception {
+
+        // ★ 핵심: MVC 매처 빌더에 servletPath("/")를 명시
+        MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector).servletPath("/");
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                // H2 콘솔 프레임 허용 (disable 대신 sameOrigin 권장)
+                .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
-                        .requestMatchers("/api/v1/**").hasRole("USERS")
-                        .anyRequest().authenticated())
+                        // H2 콘솔: 서블릿 직접 매핑 → AntPath 사용
+                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+
+                        // 나머지 모든 MVC 경로: 문자열 대신 mvc.pattern(...) 사용
+                        .requestMatchers(
+                                mvc.pattern("/"),
+                                mvc.pattern("/css/**"),
+                                mvc.pattern("/images/**"),
+                                mvc.pattern("/js/**"),
+                                mvc.pattern("/profile")
+                        ).permitAll()
+
+                        .requestMatchers(mvc.pattern("/api/v1/**")).hasRole("USERS")
+
+                        .anyRequest().authenticated()
+                )
                 .logout(logout -> logout.logoutSuccessUrl("/"))
-                .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)));
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                );
 
         return http.build();
     }

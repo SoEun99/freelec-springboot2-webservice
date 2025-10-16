@@ -63,7 +63,6 @@ public class PostsApiControllerTest {
     @WithMockUser(roles = "USERS")
     public void Posts_test() throws Exception {
         //given
-        port = 8080;
         String title = "title";
         String content = "content";
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
@@ -74,8 +73,8 @@ public class PostsApiControllerTest {
         String url = "http://localhost:" + port + "/api/v1/posts";
 
         //when
-        mvc.perform(post(url)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        mvc.perform(post("/api/v1/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(requestDto)))
                 .andExpect(status().isOk());
 
@@ -115,12 +114,14 @@ public class PostsApiControllerTest {
                 .content(expectedContent)
                 .build();
 
-        String url = "http://localhost:" + port + "/api/v1/posts/" + updateId;
+        String path = "/api/v1/posts/" + updateId;
         HttpEntity<PostsUpdateRequestDto> requestEntity = new HttpEntity<>(requestDto);
 
         //when
-        mvc.perform(put(url)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        mvc.perform(put(path)                              // 예: "/api/v1/posts/{id}"
+                        // .servletPath("/")  ← 삭제!
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
                         .content(new ObjectMapper().writeValueAsString(requestDto)))
                 .andExpect(status().isOk());
 
