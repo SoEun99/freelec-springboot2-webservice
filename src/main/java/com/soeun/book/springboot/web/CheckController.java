@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2Aut
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class CheckController {
@@ -14,6 +15,7 @@ public class CheckController {
     private static final Logger log = LoggerFactory.getLogger(CheckController.class);
 
     @GetMapping("/whoami")
+    @ResponseBody
     public String whoAmI(
             @RegisteredOAuth2AuthorizedClient("google") OAuth2AuthorizedClient googleClient,
             OAuth2AuthenticationToken auth) {
