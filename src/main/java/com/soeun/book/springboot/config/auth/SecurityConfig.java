@@ -2,6 +2,9 @@ package com.soeun.book.springboot.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.h2.engine.Role;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +28,7 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile", "/**").permitAll()
+                        .requestMatchers(EndpointRequest.to(HealthEndpoint.class, InfoEndpoint.class)).permitAll()
                         //.requestMatchers("/api/v1/**").hasRole("USERS")
                         .anyRequest().permitAll());
                         //.anyRequest().authenticated())
