@@ -43,6 +43,8 @@ plugins {
 
         implementation 'org.springframework.security:spring-security-test'
 
+        implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
+
     }
 // <- dependencies 바깥(최상위)에 위치해야 함
 test {
