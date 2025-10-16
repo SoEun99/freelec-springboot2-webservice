@@ -45,6 +45,8 @@ plugins {
 
         implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.1'
 
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
     }
 // <- dependencies 바깥(최상위)에 위치해야 함
 test {
