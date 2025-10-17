@@ -16,12 +16,9 @@ default:
       - .gradle/wrapper/
       - .m2/repository/
 
-# 1) JDK 24로 빌드
+# JDK 24로 빌드
 build_jdk24:
   stage: build
   image: eclipse-temurin:24-jdk
   script:
-    - ./gradlew clean build --no-daemon --stacktrace
-
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - ./gradlew clean build
