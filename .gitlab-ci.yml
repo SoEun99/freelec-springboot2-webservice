@@ -1,0 +1,27 @@
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+
+stages:
+  - build
+  - test
+  - deploy
+
+# 공통 캐시 (Gradle/Maven 로컬 캐시)
+default:
+  cache:
+    key: "${CI_PROJECT_NAME}"
+    paths:
+      - .gradle/caches/
+      - .gradle/wrapper/
+      - .m2/repository/
+
+# 1) JDK 24로 빌드
+build_jdk24:
+  stage: build
+  image: eclipse-temurin:24-jdk
+  script:
+    - ./gradlew clean build --no-daemon --stacktrace
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
