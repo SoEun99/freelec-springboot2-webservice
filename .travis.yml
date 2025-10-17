@@ -1,6 +1,5 @@
 language: java
-jdk:
-  - openjdk10
+jdk: semeru11
 
 branches:
   only:
@@ -9,10 +8,10 @@ branches:
 #Travis CI 서버의 Home
 cache:
   directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.gradle'
+    - $HOME/.m2/repository
+    - $HOME/.gradle
 
-script: "./gradlew clean build"
+script: ./gradlew clean build
 
 #CI 실행 완료 시 메일로 알람
 notifications:
