@@ -4,7 +4,6 @@ workflow:
 
 stages:
   - build
-  - test
   - deploy
 
 # 공통 캐시 (Gradle/Maven 로컬 캐시)
@@ -16,9 +15,19 @@ default:
       - .gradle/wrapper/
       - .m2/repository/
 
+before_script:
+  - zip -r freelec-springboot2-weservice *
+  - mkdir -p deploy
+  - mv freelec-springboot2-webservice.zip deploy/freelec-springboot2-webservice.zip
+
 # JDK 24로 빌드
 build_jdk24:
   stage: build
   image: eclipse-temurin:24-jdk
   script:
     - ./gradlew clean build
+
+deploy_S3:
+  stage: deploy
+  aws_access_key_id: $AWS_ACCESS_KEY_ID
+  aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
