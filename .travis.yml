@@ -1,5 +1,5 @@
 language: java
-jdk: openjdk10
+jdk: openjdk24
 
 branches:
   only:
@@ -15,12 +15,7 @@ script:
   - ./gradlew clean build
   - jdk_switcher use openjdk10
 
-#CI 실행 완료 시 메일로 알람
-notifications:
-  email:
-    recipients:
-      - eoth999@gmail.comm
-        
+# 유료 전환돼서 사용 안함
         
 # branches
 #  · Travis CI를 어느 브랜치가 푸시될 때 수행할지 지정
