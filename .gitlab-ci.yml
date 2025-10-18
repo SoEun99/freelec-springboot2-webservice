@@ -1,12 +1,14 @@
+#workflow: 파이프라인 실행 유형 제어
 workflow:
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
 
+#stages: 파이프라인 단계의 이름과 순서
 stages:
   - build
   - deploy
 
-# 공통 캐시 (Gradle/Maven 로컬 캐시)
+#default: 작업 키워드에 대한 사용자 정의 기본값
 default:
   cache:
     key: "${CI_PROJECT_NAME}"
@@ -29,5 +31,18 @@ build_jdk24:
 
 deploy_S3:
   stage: deploy
-  aws_access_key_id: $AWS_ACCESS_KEY_ID
-  aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+  script:
+    - aws configure set aws_access_key $AWS_ACCESS_KEY
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set region $AWS_DEFAULT_REGION
+    - aws configure set s3_bucket_name $S3_BUCKET_NAME
+
+# 전역 키워드
+#  workflow: 파이프라인 실행 유형 제어
+#  include: 다른 YAML 파일에서 구성 가져오기
+#  variables: 파이프라인의 모든 작업에 대한 CI/CD 변수 정의
+#  stages: 파이프라인 단계의 이름과 순서
+#  default: 작업 키워드에 대한 사용자 정의 기본값
+
+# 헤더 키워드
+#  spec: 외부 구성 파일에 대한 사양 정의
