@@ -1,10 +1,5 @@
 #Travis CI가 유료화되어 GitLab으로 마이그레이션
 
-#workflow: 파이프라인 실행 유형 제어
-workflow:
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
-
 #stages: 파이프라인 단계의 이름과 순서
 stages:
   - build
