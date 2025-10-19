@@ -73,19 +73,19 @@ jobs:
 #        aws-region: ap-southeast-2
 
 # Sample workflow to access AWS resources when workflow is tied to branch
-      - name: Git clone the repository
-        uses: actions/checkout@v5
+    - name: Git clone the repository
+      uses: actions/checkout@v5
 
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
-        with:
-          role-to-assume: arn:aws:iam::862344888488:user/springboot2-webservice-tester
-          aws-region: ${{ env.AWS_REGION }}
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+      with:
+        role-to-assume: arn:aws:iam::862344888488:user/springboot2-webservice-tester
+        aws-region: ${{ env.AWS_REGION }}
 
       # Upload a file to AWS s3
-      - name: Copy index.html to s3
-        run: |
-          aws s3 cp ./index.html s3://${{ env.BUCKET_NAME }}/
+    - name: Copy index.html to s3
+      run: |
+        aws s3 cp ./index.html s3://${{ env.BUCKET_NAME }}/
 
 
 #S3 업로드
