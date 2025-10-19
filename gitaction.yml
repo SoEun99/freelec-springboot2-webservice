@@ -1,0 +1,22 @@
+name: Mirror to GitLab
+on:
+  push:
+    branches: ["**"]
+    tags: ["**"]
+  delete:
+    branches: ["**"]
+    tags: ["**"]
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest   # self-hosted 쓰면 여기만 바꾸면 됨
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0     # --mirror를 위해 전체 히스토리
+      - name: Push --mirror to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git remote add gitlab https://oauth2:${GITLAB_TOKEN}@gitlab.com/<group>/<repo>.git
+          git push --mirror gitlab
