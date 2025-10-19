@@ -65,6 +65,7 @@ jobs:
         path: dist/
 
 
+<<<<<<< HEAD
   upload-to-s3:
     runs-on: ubuntu-latest
     permissions:
