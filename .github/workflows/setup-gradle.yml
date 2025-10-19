@@ -12,12 +12,12 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-
-jobs:
-  build:
   env:
     BUCKET_NAME: "freelec-springboot2-webservice-test-test-test"
     AWS_REGION: "ap-southeast-2"
+
+jobs:
+  build:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
