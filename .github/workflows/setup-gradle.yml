@@ -75,24 +75,26 @@ jobs:
         role-to-assume: arn:aws:iam::862344888488:role/GitHubActionsS3Uploader
         aws-region: ap-southeast-2
 
-      # Upload a file to AWS s3
-    - name: Copy index.html to s3
+# S3 업로드
+    - name: Upload artifact to S3
+      env:
+        S3_BUCKET: freelec-springboot2-webservice-test-test-test
       run: |
-        aws s3 cp ./index.html s3://${{ env.BUCKET_NAME }}/
+          set -e
+          FILE=$(ls app/build/libs/*.jar | head -n1)
+          echo "Uploading $FILE to s3://$S3_BUCKET/$S3_KEY_PREFIX/"
+          aws s3 cp "$FILE" "s3://$S3_BUCKET/$S3_KEY_PREFIX/$(basename "$FILE")" \
+            --content-type application/java-archive \
+             --cache-control "no-cache"
 
 
-#S3 업로드
-#    - name: Upload artifact to S3
-#      env:
-#        S3_BUCKET: freelec-springboot2-webservice-test-test-test
+
+#      # Upload a file to AWS s3
+#    - name: Copy index.html to s3
 #      run: |
-#          set -e
-#          FILE=$(ls app/build/libs/*.jar | head -n1)
-#          echo "Uploading $FILE to s3://$S3_BUCKET/$S3_KEY_PREFIX/"
-#          aws s3 cp "$FILE" "s3://$S3_BUCKET/$S3_KEY_PREFIX/$(basename "$FILE")" \
-#            --content-type application/java-archive \
-#            --cache-control "no-cache"
-#
+#        aws s3 cp ./index.html s3://${{ env.BUCKET_NAME }}/
+
+
 
   dependency-submission:
 
