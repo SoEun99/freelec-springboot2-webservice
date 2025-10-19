@@ -16,8 +16,8 @@ on:
 jobs:
   build:
   env:
-    BUCKET_NAME : "freelec-springboot2-webservice-test-test-test"
-    AWS_REGION : "ap-southeast-2"
+    BUCKET_NAME: "freelec-springboot2-webservice-test-test-test"
+    AWS_REGION: "ap-southeast-2"
     runs-on: ubuntu-latest
     permissions:
       id-token: write
