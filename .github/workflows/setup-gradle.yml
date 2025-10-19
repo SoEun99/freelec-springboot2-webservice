@@ -42,7 +42,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: Package
+        name: 1.8-1.0-SNAPSHOT-plain
         path: build/libs
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
@@ -60,7 +60,7 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
-        name: Package
+        name: 1.8-1.0-SNAPSHOT-plain
         path: dist/
 
 
@@ -70,7 +70,7 @@ jobs:
         GITLAB_URL: https://gitlab.com                # 자가호스팅이면 해당 URL로 교체
         GITLAB_PROJECT_ID: ${{ secrets.GITLAB_PROJECT_ID }}   # GitLab 프로젝트 ID (정수)
         GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}             # GitLab Personal Access Token (api 권한)
-        PKG_NAME: Package
+        PKG_NAME: 1.8-1.0-SNAPSHOT-plain
         PKG_VER: ${{ github.run_number }}                     # 버전 규칙은 자유
       run: |
             set -e
