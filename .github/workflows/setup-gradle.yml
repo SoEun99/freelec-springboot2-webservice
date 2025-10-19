@@ -64,15 +64,6 @@ jobs:
         name: 1.8-1.0-SNAPSHOT-plain
         path: dist/
 
- # AWS CLI 설치 (선호) — 또는 s3-sync 액션 사용 가능
-    - name: Install AWS CLI
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install -y unzip
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip -q awscliv2.zip
-        sudo ./aws/install
-
     - name: Configure AWS credentials (OIDC)
       uses: aws-actions/configure-aws-credentials@v4
       with:
