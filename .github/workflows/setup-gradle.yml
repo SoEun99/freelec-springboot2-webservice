@@ -8,13 +8,14 @@
 name: Java with Gradle
 
 on:
+  env:
+    BUCKET_NAME: "freelec-springboot2-webservice-test-test-test"
+    AWS_REGION: "ap-southeast-2"
+
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  env:
-    BUCKET_NAME: "freelec-springboot2-webservice-test-test-test"
-    AWS_REGION: "ap-southeast-2"
 
 jobs:
   build:
