@@ -18,6 +18,7 @@ jobs:
 
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       contents: read
 
     steps:
@@ -64,24 +65,32 @@ jobs:
         path: dist/
 
 
-# GitLab Generic Package Registry로 업로드
-    - name: Push to GitLab Generic Package Registry
-      env:
-        GITLAB_URL: https://gitlab.com                # 자가호스팅이면 해당 URL로 교체
-        GITLAB_PROJECT_ID: ${{ secrets.GITLAB_PROJECT_ID }}   # GitLab 프로젝트 ID (정수)
-        GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}             # GitLab Personal Access Token (api 권한)
-        PKG_NAME: 1.8-1.0-SNAPSHOT-plain
-        PKG_VER: ${{ github.run_number }}                     # 버전 규칙은 자유
-      run: |
-            set -e
-            FILE=$(ls dist/* | head -n1)
-            BASENAME=$(basename "$FILE")
-            curl --fail --show-error --location \
-              --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-              --upload-file "$FILE" \
-              "$GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/packages/generic/$PKG_NAME/$PKG_VER/$BASENAME"
-            echo "Uploaded: $BASENAME -> $GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/packages/generic/$PKG_NAME/$PKG_VER/$BASENAME"
+  upload-to-s3:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write     # OIDC에 필요
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
 
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::eoth999@gmail.com:role/GitHubActionsS3Uploader
+          aws-region: ap-northeast-2
+
+      # S3 업로드
+      - name: Upload artifact to S3
+        env:
+          S3_BUCKET: freelec-springboot2-webservice-soeun
+          S3_KEY_PREFIX: releases/app/${{ github.run_number }}
+        run: |
+          set -e
+          FILE=$(ls app/build/libs/*.jar | head -n1)
+          echo "Uploading $FILE to s3://$S3_BUCKET/$S3_KEY_PREFIX/"
+          aws s3 cp "$FILE" "s3://$S3_BUCKET/$S3_KEY_PREFIX/$(basename "$FILE")" \
+            --content-type application/java-archive \
+            --cache-control "no-cache"
 
 
   dependency-submission:
@@ -103,3 +112,20 @@ jobs:
     - name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
+# GitLab Generic Package Registry로 업로드
+#    - name: Push to GitLab Generic Package Registry
+#      env:
+#        GITLAB_URL: https://gitlab.com                # 자가호스팅이면 해당 URL로 교체
+#        GITLAB_PROJECT_ID: ${{ secrets.GITLAB_PROJECT_ID }}   # GitLab 프로젝트 ID (정수)
+#        GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}             # GitLab Personal Access Token (api 권한)
+#        PKG_NAME: 1.8-1.0-SNAPSHOT-plain
+#        PKG_VER: ${{ github.run_number }}                     # 버전 규칙은 자유
+#      run: |
+#            set -e
+#            FILE=$(ls dist/* | head -n1)
+#            BASENAME=$(basename "$FILE")
+#            curl --fail --show-error --location \
+#              --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+#              --upload-file "$FILE" \
+#              "$GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/packages/generic/$PKG_NAME/$PKG_VER/$BASENAME"
+#            echo "Uploaded: $BASENAME -> $GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/packages/generic/$PKG_NAME/$PKG_VER/$BASENAME"
