@@ -8,10 +8,6 @@
 name: Java with Gradle
 
 on:
-  env:
-    BUCKET_NAME: freelec-springboot2-webservice-test-test-test
-    AWS_REGION: ap-southeast-2
-
   push:
     branches: [ "master" ]
   pull_request:
@@ -20,6 +16,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      BUCKET_NAME: freelec-springboot2-webservice-test-test-test
+      AWS_REGION: ap-southeast-2
     permissions:
       id-token: write
       contents: read
