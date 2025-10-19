@@ -1,5 +1,5 @@
 #Travis CI가 유료화되어 GitLab으로 마이그레이션
-
+#TEST
 #stages: 파이프라인 단계의 이름과 순서
 stages:
   - build
