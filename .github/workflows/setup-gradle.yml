@@ -68,7 +68,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::862344888488:role/GitHubActionsS3Uploader
-        aws-region: ap-northeast-2
+        aws-region: ap-southeast-2
 
       # S3 업로드
     - name: Upload artifact to S3
