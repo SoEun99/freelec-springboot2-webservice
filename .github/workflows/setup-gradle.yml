@@ -81,9 +81,9 @@ jobs:
         S3_BUCKET: freelec-springboot2-webservice-test-test-test
       run: |
           set -e
-          FILE=$(ls app/build/libs/*.jar | head -n1)
-          echo "Uploading $FILE to s3://$S3_BUCKET/$S3_KEY_PREFIX/"
-          aws s3 cp "$FILE" "s3://$S3_BUCKET/$S3_KEY_PREFIX/$(basename "$FILE")" \
+          FILE=$(ls build/libs/*.jar | head -n1)
+          echo "Uploading $FILE to s3://$S3_BUCKET/"
+          aws s3 cp "$FILE" "s3://$S3_BUCKET/$(basename "$FILE")" \
             --content-type application/java-archive \
              --cache-control "no-cache"
 
