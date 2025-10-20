@@ -80,7 +80,7 @@ jobs:
         S3_BUCKET: freelec-springboot2-test-test-test
       run: |
           set -e
-          FILE=$(ls build/libs/*.jar | head -n1)
+          FILE=$(ls build/libs/*.jar | tail -n1)
           echo "Uploading $FILE to s3://$S3_BUCKET/"
           echo "파일 : $FILE"
           echo "경로 : $PWD"
