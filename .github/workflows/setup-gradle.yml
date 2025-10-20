@@ -34,6 +34,9 @@ jobs:
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+      # Sample workflow to access AWS resources when workflow is tied to branch
+    - name: Git clone the repository
+      uses: actions/checkout@v5
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
@@ -65,10 +68,6 @@ jobs:
         name: 1.8-1.0-SNAPSHOT-plain
         path: dist/
 
-# Sample workflow to access AWS resources when workflow is tied to branch
-    - name: Git clone the repository
-      uses: actions/checkout@v5
-
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
       with:
@@ -83,6 +82,8 @@ jobs:
           set -e
           FILE=$(ls build/libs/*.jar | head -n1)
           echo "Uploading $FILE to s3://$S3_BUCKET/"
+          echo "파일 : $FILE"
+          echo "경로 : $PWD"
           aws s3 cp "$FILE" "s3://$S3_BUCKET/$(basename "$FILE")" \
             --content-type application/java-archive \
              --cache-control "no-cache"
@@ -132,3 +133,4 @@ jobs:
 #              --upload-file "$FILE" \
 #              "$GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/packages/generic/$PKG_NAME/$PKG_VER/$BASENAME"
 #            echo "Uploaded: $BASENAME -> $GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/packages/generic/$PKG_NAME/$PKG_VER/$BASENAME"
+
