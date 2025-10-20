@@ -17,7 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      BUCKET_NAME: freelec-springboot2-webservice-test-test-test
+      BUCKET_NAME: freelec-springboot2-test-test-test
     permissions:
       id-token: write
       contents: read
@@ -47,7 +47,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: 1.8-1.0-SNAPSHOT-plain
+        name: 1.8-1.0-SNAPSHOT
         path: build/libs
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
@@ -65,7 +65,7 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
-        name: 1.8-1.0-SNAPSHOT-plain
+        name: 1.8-1.0-SNAPSHOT
         path: dist/
 
     - name: configure aws credentials
