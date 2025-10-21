@@ -87,7 +87,7 @@ jobs:
           aws s3 cp "$FILE" "s3://$S3_BUCKET/$(basename "$FILE")" \
             --content-type application/java-archive \
              --cache-control "no-cache"
-
+# CodeDeploy or Github Action's Deploy
 
 
 #      # Upload a file to AWS s3
