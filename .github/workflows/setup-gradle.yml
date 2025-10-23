@@ -119,21 +119,4 @@ jobs:
     - name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
-# GitLab Generic Package Registry로 업로드
-#    - name: Push to GitLab Generic Package Registry
-#      env:
-#        GITLAB_URL: https://gitlab.com                # 자가호스팅이면 해당 URL로 교체
-#        GITLAB_PROJECT_ID: ${{ secrets.GITLAB_PROJECT_ID }}   # GitLab 프로젝트 ID (정수)
-#        GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}             # GitLab Personal Access Token (api 권한)
-#        PKG_NAME: 1.8-1.0-SNAPSHOT-plain
-#        PKG_VER: ${{ github.run_number }}                     # 버전 규칙은 자유
-#      run: |
-#            set -e
-#            FILE=$(ls dist/* | head -n1)
-#            BASENAME=$(basename "$FILE")
-#            curl --fail --show-error --location \
-#              --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-#              --upload-file "$FILE" \
-#              "$GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/packages/generic/$PKG_NAME/$PKG_VER/$BASENAME"
-#            echo "Uploaded: $BASENAME -> $GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/packages/generic/$PKG_NAME/$PKG_VER/$BASENAME"
 
