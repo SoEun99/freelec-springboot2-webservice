@@ -50,16 +50,6 @@ jobs:
         name: 1.8-1.0-SNAPSHOT
         path: build/libs
 
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-    #   with:
-    #     gradle-version: '8.9'
-    #
-    # - name: Build with Gradle 8.9
-    #   run: gradle build
 
 # GitHub Artifacts -> 러너로 다운로드
     - name: Download artifact
@@ -87,18 +77,45 @@ jobs:
           aws s3 cp "$FILE" "s3://$S3_BUCKET/$(basename "$FILE")" \
             --content-type application/java-archive \
              --cache-control "no-cache"
-# CodeDeploy or Github Action's Deploy
 
 
-#      # Upload a file to AWS s3
-#    - name: Copy index.html to s3
-#      run: |
-#        aws s3 cp ./index.html s3://${{ env.BUCKET_NAME }}/
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ap-northeast-2
+      S3_BUCKET: YOUR_ARTIFACT_BUCKET
+      APP_NAME: your-codedeploy-app
+      DEPLOY_GROUP: your-deployment-group
+      BUNDLE_KEY: bundles/${{ github.ref_name }}.zip  # 예: v1.2.3.zip
+    steps:
+      - uses: actions/checkout@v4
 
+    # (필요 시) 빌드 단계
+    # - run: make build  # app/에 결과물 생성
+
+      - name: Zip bundle
+        run: |
+          zip -r bundle.zip appspec.yml scripts app
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_ROLE_NAME
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp bundle.zip s3://${{ env.S3_BUCKET }}/${{ env.BUNDLE_KEY }}
+
+      - name: Create CodeDeploy deployment
+        run: |
+          aws deploy create-deployment \
+            --application-name ${{ env.APP_NAME }} \
+            --deployment-group-name ${{ env.DEPLOY_GROUP }} \
+            --s3-location bucket=${{ env.S3_BUCKET }},key=${{ env.BUNDLE_KEY }},bundleType=zip
 
 
   dependency-submission:
-
     runs-on: ubuntu-latest
     permissions:
       contents: write
