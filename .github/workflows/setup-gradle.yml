@@ -89,23 +89,9 @@ jobs:
       BUNDLE_KEY: bundles/${{ github.ref_name }}.zip  # 예: v1.2.3.zip
     steps:
       - uses: actions/checkout@v4
-
-    # (필요 시) 빌드 단계
-    # - run: make build  # app/에 결과물 생성
-
       - name: Zip bundle
         run: |
           zip -r bundle.zip appspec.yml scripts app
-
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_ROLE_NAME
-
-      - name: Upload to S3
-        run: |
-          aws s3 cp bundle.zip s3://${{ env.S3_BUCKET }}/${{ env.BUNDLE_KEY }}
 
       - name: Create CodeDeploy deployment
         run: |
