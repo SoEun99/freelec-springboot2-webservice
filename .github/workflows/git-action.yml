@@ -18,7 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ap-southeast-2
-      S3_BUCKET: freelec-springboot2-test-test-test
       APP_NAME: 1.8-1.0-SNAPSHOT
       DEPLOY_GROUP: freelec-springboot2-webservice-group
       BUCKET_NAME: freelec-springboot2-test-test-test
@@ -69,29 +68,29 @@ jobs:
         aws-region: ap-southeast-2
 
 #make Zip bundle
-    - name: Zip bundle
-      run: |
-          zip -r bundle.zip appspec.yml scripts app
+#    - name: Zip bundle
+#      run: |
+#          zip -r bundle.zip appspec.yml scripts app
 
 # S3 업로드
     - name: Upload artifact to S3
       run: |
-          set -e
-          FILE=$(ls build/libs/*.zip | tail -n1)
-          echo "Uploading $FILE to s3://$S3_BUCKET/"
-          echo "파일 : $FILE"
-          echo "경로 : $PWD"
-          aws s3 cp "$FILE" "s3://$S3_BUCKET/$(basename "$FILE")" \
-            --content-type application/java-archive \
-             --cache-control "no-cache"
+        set -e
+        FILE=$(ls home/ec2-user/app/step1/*.zip | tail -n1)
+        echo "Uploading $FILE to s3://$BUCKET_NAME/"
+        echo "파일 : $FILE"
+        echo "경로 : $PWD"
+        aws s3 cp "$FILE" "s3://$BUCKET_NAME/$(basename "$FILE")" \
+          --content-type application/java-archive \
+          --cache-control "no-cache"
 
 # CodeDeploy 배포
-      - name: Create CodeDeploy deployment
-        run: |
-          aws deploy create-deployment \
-            --application-name ${{ env.APP_NAME }} \
-            --deployment-group-name ${{ env.DEPLOY_GROUP }} \
-            --s3-location bucket=${{ env.S3_BUCKET }},bundleType=zip
+    - name: Create CodeDeploy deployment
+      run: |
+        aws deploy create-deployment \
+          --application-name ${{ env.APP_NAME }} \
+          --deployment-group-name ${{ env.DEPLOY_GROUP }} \
+          --s3-location bucket=${{ env.BUCKET_NAME }},bundleType=zip
 
 
   dependency-submission:
