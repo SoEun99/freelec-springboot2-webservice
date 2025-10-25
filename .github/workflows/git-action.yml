@@ -90,7 +90,7 @@ jobs:
 # CodeDeploy 배포
     - name: Create CodeDeploy deployment
       run: |
-        aws deploy create-deployment $PWD/*.zip
+        aws deploy create-deployment
 
 
   dependency-submission:
