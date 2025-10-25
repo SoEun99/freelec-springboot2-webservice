@@ -5,6 +5,8 @@ files:
     destination: /home/ec2-user/app/step2/zip/
     overwrite: yes
 
+# 빌드된 애플리케이션 번들(zip)을 EC2 인스턴스의 특정 경로에 그대로 복사
+
 #version: 0.0
 # · codedeploy 버전을 이야기 합니다.
 # · 프로젝트 버전이 아니므로 0.0 이외 다른 버전을 사용하면 오류가 발생합니다.
