@@ -75,8 +75,6 @@ jobs:
 
 # S3 업로드
     - name: Upload artifact to S3
-      env:
-        S3_BUCKET: freelec-springboot2-test-test-test
       run: |
           set -e
           FILE=$(ls build/libs/*.zip | tail -n1)
