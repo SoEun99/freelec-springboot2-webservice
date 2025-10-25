@@ -76,7 +76,7 @@ jobs:
     - name: Upload artifact to S3
       run: |
         set -e
-        FILE=$(ls /home/ec2-user/app/step1/*.zip | tail -n1)
+        FILE=$(ls $PWD/*.zip | tail -n1)
         echo "Uploading $FILE to s3://$BUCKET_NAME/"
         echo "파일 : $FILE"
         echo "경로 : $PWD"
