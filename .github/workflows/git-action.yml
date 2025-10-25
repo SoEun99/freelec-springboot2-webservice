@@ -87,10 +87,10 @@ jobs:
 # CodeDeploy 배포
     - name: Create CodeDeploy deployment
       run: |
-        aws deploy create-deployment \
-          --application-name ${{ env.APP_NAME }} \
-          --deployment-group-name ${{ env.DEPLOY_GROUP }} \
-          --s3-location bucket=${{ env.BUCKET_NAME }},bundleType=zip
+        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        aws configure set region $AWS_DEFAULT_REGION
+        aws s3 cp deploy/*.zip s3://$S3_BUCKET_NAME/ --acl private
 
 
   dependency-submission:
