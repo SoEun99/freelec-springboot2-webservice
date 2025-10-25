@@ -17,6 +17,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      AWS_REGION: ap-southeast-2
+      S3_BUCKET: freelec-springboot2-test-test-test
+      APP_NAME: 1.8-1.0-SNAPSHOT
+      DEPLOY_GROUP: freelec-springboot2-webservice-group
       BUCKET_NAME: freelec-springboot2-test-test-test
     permissions:
       id-token: write
@@ -84,16 +88,6 @@ jobs:
              --cache-control "no-cache"
 
 # CodeDeploy 배포
-
-  deploy:
-    runs-on: ubuntu-latest
-    env:
-      AWS_REGION: ap-southeast-2
-      S3_BUCKET: freelec-springboot2-test-test-test
-      APP_NAME: 1.8-1.0-SNAPSHOT
-      DEPLOY_GROUP:  freelec-springboot2-webservice-group
-    steps:
-      - uses: actions/checkout@v4
       - name: Create CodeDeploy deployment
         run: |
           aws deploy create-deployment \
