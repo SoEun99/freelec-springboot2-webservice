@@ -93,7 +93,7 @@ jobs:
         aws deploy create-deployment \
           --application-name "freelec-springboot2-webservice-soeun" \
           --deployment-group-name "freelec-springboot2-webservice-group" \
-          --revision "s3Location={bucket=freelec-springboot2-test-test-test,key=bundles/bundle.zip,bundleType=zip}" \
+          --revision "s3Location={bucket=freelec-springboot2-test-test-test,key=bundles/bundle-${GITHUB_SHA}.zip,bundleType=zip}" \
           --file-exists-behavior OVERWRITE
           --region ap-southeast-2
 
